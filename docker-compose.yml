@@ -1,0 +1,78 @@
+version: "3.8"
+
+services:
+  storefront:
+    container_name: storefront
+    image: node:18-alpine
+    working_dir: /app/
+    command: sh -c "npm i -g pnpm && pnpm install && pnpm dev"
+    env_file: storefront/.env
+    environment:
+      NEXT_PUBLIC_MEDUSA_BACKEND_URL: ${NEXT_PUBLIC_MEDUSA_BACKEND_URL}
+      NEXT_PUBLIC_BASE_URL: ${NEXT_PUBLIC_BASE_URL}
+      NEXT_PUBLIC_DEFAULT_REGION: ${NEXT_PUBLIC_DEFAULT_REGION}
+      NEXT_PUBLIC_SEARCH_APP_ID: ${NEXT_PUBLIC_SEARCH_APP_ID}
+      NEXT_PUBLIC_SEARCH_ENDPOINT: ${NEXT_PUBLIC_SEARCH_ENDPOINT}
+      NEXT_PUBLIC_SEARCH_API_KEY: ${NEXT_PUBLIC_SEARCH_API_KEY}
+      NEXT_PUBLIC_INDEX_NAME: ${NEXT_PUBLIC_INDEX_NAME}
+      REVALIDATE_SECRET: ${REVALIDATE_SECRET}
+    volumes:
+      - ./storefront:/app
+      - ./storefront/node_modules:/app/node_modules
+    restart: always
+    ports:
+      - 8000:8000
+    depends_on:
+      - backendDB
+    networks:
+      - net
+
+  backend:
+    container_name: backend
+    image: node:18-alpine
+    working_dir: /app/
+    command: sh -c "npm i -g pnpm && pnpm install && pnpm dev"
+    env_file: backend/.env
+    environment:
+      DATABASE_TYPE: ${DATABASE_TYPE}
+      DATABASE_URL: ${DATABASE_URL}
+      MEDUSA_ADMIN_ONBOARDING_TYPE: ${MEDUSA_ADMIN_ONBOARDING_TYPE}
+      STORE_CORS: ${STORE_CORS}
+      MEDUSA_ADMIN_ONBOARDING_NEXTJS_DIRECTORY: frontend
+    volumes:
+      - ./backend:/app
+      - ./backend/node_modules:/app/node_modules
+    restart: always
+    ports:
+      - 7001:7001
+    depends_on:
+      - backendDB
+    networks:
+      - net
+
+  backendDB:
+    container_name: backendDB
+    platform: linux/amd64 #for platform error on Apple M1 chips
+    restart: unless-stopped
+    env_file: backend/.env
+    image: postgres:16-alpine
+    hostname: postgresDB
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_NAME: ${POSTGRES_NAME}
+    volumes:
+      - payload-data:/var/lib/postgresql/data/ #using a volume
+      #- ./data:/var/lib/postgresql/data/ # if you want to use a bind folder
+    ports:
+      - "5432:5432"
+    networks:
+      - net
+
+# https://stackoverflow.com/a/67010277
+volumes:
+  payload-data:
+
+networks:
+  net:
+    driver: bridge
