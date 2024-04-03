@@ -5,3 +5,4 @@
 **/.pnpm-store
 backend/uploads
 **/.cache
+.DS_Store
