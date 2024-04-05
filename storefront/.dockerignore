@@ -1,0 +1,10 @@
+.git
+.DS_Store
+.next
+.vscode
+.github
+docker-compose.yml
+node_modules
+next-env.d.ts
+Dockerfile
+.dockerignore

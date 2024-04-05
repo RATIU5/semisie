@@ -1,48 +1,43 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
+    /* Base Options: */
     "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "target": "ESNext",
+    "allowJs": true,
     "resolveJsonModule": true,
+    "moduleDetection": "force",
     "isolatedModules": true,
+
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "checkJs": true,
+
+    /* Bundled projects */
+    "lib": ["dom", "dom.iterable", "ESNext"],
+    "noEmit": true,
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "jsx": "preserve",
+    "plugins": [{ "name": "next" }],
     "incremental": true,
-    "types": ["cypress"],
-    "baseUrl": "./src",
+
+    /* Path Aliases */
+    "baseUrl": ".",
     "paths": {
-      "@lib/*": ["lib/*"],
-      "@modules/*": ["modules/*"],
-      "@pages/*": ["pages/*"]
-    },
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ]
+      "@/*": ["./src/*"],
+      "@payload-config": ["./payload.config.ts"]
+    }
   },
   "include": [
+    ".eslintrc.cjs",
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "cypress/support/index.js",
-    "cypress/support/commands.js",
-    "cypress/integration/product.spec.js",
-    "cypress/plugins/index.js",
+    "**/*.cjs",
+    "**/*.js",
     ".next/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules",
-    ".next",
-    ".nyc_output",
-    "cypress-coverage",
-    "coverage",
-    "jest-coverage"
-  ]
+  "exclude": ["node_modules"]
 }

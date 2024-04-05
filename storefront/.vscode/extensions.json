@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    "aaron-bond.better-comments",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "dbaeumer.vscode-eslint",
+    "million.million-lint",
+    "SonarSource.sonarlint-vscode",
+    "ms-vscode-remote.remote-containers",
+    "GraphQL.vscode-graphql-syntax"
+  ]
+}
