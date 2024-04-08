@@ -118,7 +118,7 @@ const ShippingAddress = ({
           value={formData["shipping_address.company"]}
           onChange={handleChange}
           autoComplete="organization"
-          data-testid="shipping-address-2-input"
+          data-testid="shipping-company-input"
         />
         <Input
           label="Postal code"
@@ -175,7 +175,7 @@ const ShippingAddress = ({
           value={formData.email}
           onChange={handleChange}
           required
-          dat-testid="shipping-email-input"
+          data-testid="shipping-email-input"
         />
         <Input
           label="Phone"
