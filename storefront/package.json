@@ -21,6 +21,9 @@
     "@types/react": "17.0.40"
   },
   "dependencies": {
+    "@builder.io/dev-tools": "^1.0.2",
+    "@builder.io/react": "^3.2.6",
+    "@builder.io/sdk": "^2.2.2",
     "@headlessui/react": "^1.6.1",
     "@hookform/error-message": "^2.0.0",
     "@medusajs/link-modules": "^0.2.3",
