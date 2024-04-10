@@ -1,8 +1,0 @@
-**/node_modules
-**/dist
-**/build
-**/.next
-**/.pnpm-store
-backend/uploads
-**/.cache
-.DS_Store
