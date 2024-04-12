@@ -1,6 +1,7 @@
 import type { FieldHook } from "payload/types";
 
 import type { User } from "@/payload-types";
+import isFirstUser from "@/payload/lib/is-first-user";
 
 // ensure the first user created is a super
 // 1. lookup a single user on create as succinctly as possible
@@ -18,6 +19,10 @@ export const ensureFirstUserIsAdmin: FieldHook<User> = async (data) => {
       if (data.value === undefined || data.value !== "admin") {
         return "admin";
       }
+    }
+  } else if (data.operation === "update") {
+    if (await isFirstUser(data.originalDoc?.id)) {
+      return "admin";
     }
   }
 
