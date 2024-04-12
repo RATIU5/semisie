@@ -23,8 +23,8 @@ export interface Config {
  */
 export interface User {
   id: number;
-  Name?: string | null;
-  roles?: ('admin' | 'editor' | 'viewer') | null;
+  name?: string | null;
+  role?: ('admin' | 'editor' | 'viewer') | null;
   updatedAt: string;
   createdAt: string;
   email: string;

@@ -1,32 +1,55 @@
-import type { Access, AccessArgs } from "payload/config";
+import type { Access } from "payload/config";
 
 import type { User } from "../payload-types";
+import { FieldAccess } from "payload/types";
 
-import { checkRole } from "./collections/users/check-role";
-
-type IsRole = (args: AccessArgs<unknown, User>) => boolean;
-
-export const admins: IsRole = ({ req: { user } }) => {
-  return checkRole("admin", user);
+export const admins: Access<any, User> = ({ req: { user } }) => {
+  return Boolean(user?.role === "admin");
 };
 
-export const editors: IsRole = ({ req: { user } }) => {
-  return checkRole("editor", user);
+export const hasAdminAccess: FieldAccess<{ id: string }, unknown, User> = ({
+  req: { user },
+}) => {
+  return Boolean(user?.role === "admin");
 };
 
-export const viewers: IsRole = ({ req: { user } }) => {
-  return checkRole("viewer", user);
+export const hasAdminAccessButNotFirstUser: FieldAccess<
+  { id: string },
+  unknown,
+  User
+> = ({ req: { user } }) => {
+  return Boolean(user?.role === "admin") && user?.id !== 1;
 };
 
-export const editorsOrAdmins: Access = ({ req: { user } }) => {
-  return checkRole("admin", user) || checkRole("editor", user);
+export const editors: Access<any, User> = ({ req: { user } }) => {
+  return Boolean(user?.role === "editor");
 };
 
-export const anyone: Access = ({ req: { user } }) => {
-  return !!user;
+export const hasEditorAccess: FieldAccess<{ id: string }, unknown, User> = ({
+  req: { user },
+}) => {
+  return Boolean(user?.role === "editor");
 };
 
-export const anyoneOrPublished: Access = ({ req: { user } }) => {
+export const viewers: Access<any, User> = ({ req: { user } }) => {
+  return Boolean(user?.role === "viewer");
+};
+
+export const hasViewerAccess: FieldAccess<{ id: string }, unknown, User> = ({
+  req: { user },
+}) => {
+  return Boolean(user?.role === "viewer");
+};
+
+export const editorsOrAdmins: Access<any, User> = ({ req: { user } }) => {
+  return Boolean(user?.role === "editor" || user?.role === "admin");
+};
+
+export const anyone: Access<any, User> = ({ req: { user } }) => {
+  return Boolean(user);
+};
+
+export const anyoneOrPublished: Access<any, User> = ({ req: { user } }) => {
   if (user) {
     return true;
   }

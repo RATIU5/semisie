@@ -1,5 +1,9 @@
 import type { CollectionConfig } from "payload/types";
-import { admins } from "../../access";
+import {
+  admins,
+  hasAdminAccess,
+  hasAdminAccessButNotFirstUser,
+} from "../../access";
 import { ensureFirstUserIsAdmin } from "./hooks/ensure-first-user-is-admin";
 
 export const Users: CollectionConfig = {
@@ -7,6 +11,9 @@ export const Users: CollectionConfig = {
   admin: {
     defaultColumns: ["name", "email", "role"],
     useAsTitle: "email",
+  },
+  access: {
+    create: admins,
   },
   auth: true,
   fields: [
@@ -18,9 +25,10 @@ export const Users: CollectionConfig = {
     {
       name: "role",
       access: {
-        create: admins,
-        update: admins,
+        create: hasAdminAccess,
+        update: hasAdminAccessButNotFirstUser,
       },
+      required: true,
       defaultValue: ["editor"],
       hasMany: false,
       hooks: {
@@ -28,15 +36,15 @@ export const Users: CollectionConfig = {
       },
       options: [
         {
-          label: "admin",
+          label: "Admin",
           value: "admin",
         },
         {
-          label: "editor",
+          label: "Editor",
           value: "editor",
         },
         {
-          label: "viewer",
+          label: "Viewer",
           value: "viewer",
         },
       ],

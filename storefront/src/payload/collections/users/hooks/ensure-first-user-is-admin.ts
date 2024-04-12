@@ -7,23 +7,19 @@ import type { User } from "@/payload-types";
 // 2. if there are no users found, append `super` to the roles array
 // access control is already handled by this fields `access` property
 // it ensures that only supers can create and update the `roles` field
-export const ensureFirstUserIsAdmin: FieldHook<User> = async ({
-  operation,
-  req,
-  value,
-}) => {
-  if (operation === "create") {
-    const users = await req.payload.find({
+export const ensureFirstUserIsAdmin: FieldHook<User> = async (data) => {
+  if (data.operation === "create") {
+    const users = await data.req.payload.find({
       collection: "users",
       depth: 0,
       limit: 0,
     });
     if (users.totalDocs === 0) {
-      if (value === undefined || value !== "admin") {
+      if (data.value === undefined || data.value !== "admin") {
         return "admin";
       }
     }
   }
 
-  return value;
+  return data.value;
 };
