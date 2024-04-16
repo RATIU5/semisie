@@ -11,6 +11,10 @@ export const widgetConfig = {
     label: "Show Title",
     value: true,
   },
+  datePublished: {
+    type: "date",
+    value: Date.now().toString(),
+  },
 } satisfies WidgetConfig;
 
 export default function Example(props: WidgetProps<typeof widgetConfig>) {

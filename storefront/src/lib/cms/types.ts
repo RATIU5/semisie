@@ -57,18 +57,11 @@ export type Widget =
 
 export type WidgetConfig = Record<string, Widget>;
 
-export type WidgetPropsMap<T extends WidgetConfig> = T extends {
-  type: "boolean";
-}
-  ? boolean
-  : T extends { type: "text" | "string" | "select" | "code" | "date" }
-  ? string
-  : T extends { type: "number" }
-  ? number
-  : never;
+// Prevent Widget props from inferring as specific true/false values
+type WidenBoolean<T> = T extends boolean ? boolean : T;
 
 export type WidgetProps<T extends WidgetConfig> = {
-  [K in keyof T]: WidgetPropsMap<T>;
+  [K in keyof T]: WidenBoolean<T[K]["value"]>;
 };
 
 export type Component<T extends WidgetConfig> = (
