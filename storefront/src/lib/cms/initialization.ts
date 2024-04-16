@@ -1,6 +1,6 @@
 import path from "path";
 import * as fs from "fs";
-import { Component, Widget, WidgetProps } from "./types";
+import { Component, Widget, WidgetConfig } from "./types";
 
 export async function initializeComponents() {
   const componentsDir = path.join(process.cwd(), "src", "components");
@@ -12,7 +12,7 @@ export async function initializeComponents() {
         const filePath = path.join(componentsDir, file);
         const mod = await import(filePath);
         return {
-          component: mod.default as Component,
+          component: mod.default as Component<WidgetConfig>,
           widget: mod.widget as Widget[],
         };
       })

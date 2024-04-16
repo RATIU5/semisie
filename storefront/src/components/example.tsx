@@ -1,34 +1,18 @@
-import { Widget, WidgetProps } from "@/lib/cms/types";
+import { WidgetConfig, WidgetProps } from "@/lib/cms/types";
 
-const Example: React.FC<WidgetProps<typeof widget>> = (props) => {
-  return <h1>{props.greeting} from example</h1>;
-};
-export const widget: Widget[] = [
-  {
-    type: "text",
-    name: "greeting",
+export const widgetConfig = {
+  greeting: {
+    type: "string",
     label: "Greeting",
-    defaultValue: "Hello",
+    value: "Hello",
   },
-  {
+  showTitle: {
     type: "boolean",
-    name: "showTitle",
     label: "Show Title",
-    defaultValue: true,
+    value: true,
   },
-  {
-    type: "array",
-    name: "items",
-    fields: [
-      {
-        type: "text",
-        name: "link",
-        label: "Link",
-        defaultValue: "Item 1",
-      },
-    ],
-    defaultCount: 2,
-  },
-];
+} satisfies WidgetConfig;
 
-export default Example;
+export default function Example(props: WidgetProps<typeof widgetConfig>) {
+  return props.showTitle && <h1>{props.greeting} from example</h1>;
+}
