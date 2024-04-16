@@ -1,69 +1,117 @@
 import React from "react";
 
-export type WidgetType =
+type WidgetType =
+  | "text"
   | "boolean"
-  | "code"
-  | "date"
   | "number"
   | "select"
-  | "string"
-  | "text";
+  | "array"
+  | "date"
+  | "radio"
+  | "checkbox"
+  | "textarea";
 
-interface BaseWidget<T> {
+interface WidgetBase {
   type: WidgetType;
+  name: string;
   label?: string;
-  description?: string;
   required?: boolean;
-  value: T;
 }
 
-export interface BooleanWidget<T> extends BaseWidget<T> {
+interface TextWidget extends WidgetBase {
+  type: "text";
+  defaultValue?: string;
+  placeholder?: string;
+}
+
+interface BooleanWidget extends WidgetBase {
   type: "boolean";
+  defaultValue?: boolean;
 }
 
-export interface CodeWidget<T> extends BaseWidget<T> {
-  type: "code";
-  language: string;
-}
-
-export interface DateWidget<T> extends BaseWidget<T> {
-  type: "date";
-}
-
-export interface NumberWidget<T> extends BaseWidget<T> {
+interface NumberWidget extends WidgetBase {
   type: "number";
+  defaultValue?: number;
   min?: number;
   max?: number;
+  step?: number;
 }
 
-export interface SelectWidget<T> extends BaseWidget<T> {
+interface SelectWidget extends WidgetBase {
   type: "select";
-  options: { value: string; label: string }[];
+  options: string[];
+  defaultValue?: string;
 }
 
-export interface TextWidget<T> extends BaseWidget<T> {
-  type: "string" | "text";
-  minLength?: number;
-  maxLength?: number;
+interface ArrayWidget extends WidgetBase {
+  type: "array";
+  items: WidgetList[];
+  defaultValue?: WidgetValueType<WidgetList>[];
 }
 
-export type Widget =
-  | BooleanWidget<boolean>
-  | CodeWidget<string>
-  | DateWidget<string>
-  | NumberWidget<number>
-  | SelectWidget<string>
-  | TextWidget<string>;
+interface DateWidget extends WidgetBase {
+  type: "date";
+  defaultValue?: string;
+}
 
-export type WidgetConfig = Record<string, Widget>;
+interface RadioWidget extends WidgetBase {
+  type: "radio";
+  options: string[];
+  defaultValue?: string;
+}
 
-// Prevent Widget props from inferring as specific true/false values
-type WidenBoolean<T> = T extends boolean ? boolean : T;
+interface CheckboxWidget extends WidgetBase {
+  type: "checkbox";
+  options: string[];
+  defaultValue?: string[];
+}
 
-export type WidgetProps<T extends WidgetConfig> = {
-  [K in keyof T]: WidenBoolean<T[K]["value"]>;
+interface TextareaWidget extends WidgetBase {
+  type: "textarea";
+  defaultValue?: string;
+  placeholder?: string;
+  rows?: number;
+}
+
+type WidgetValueType<T extends WidgetList> = T extends TextWidget
+  ? string
+  : T extends BooleanWidget
+  ? boolean
+  : T extends NumberWidget
+  ? number
+  : T extends SelectWidget
+  ? string
+  : T extends ArrayWidget
+  ? Array<WidgetValueType<T["items"][number]>>
+  : T extends DateWidget
+  ? string
+  : T extends RadioWidget
+  ? string
+  : T extends CheckboxWidget
+  ? string
+  : T extends TextareaWidget
+  ? string
+  : never;
+
+type WidgetList =
+  | TextWidget
+  | BooleanWidget
+  | NumberWidget
+  | SelectWidget
+  | ArrayWidget
+  | DateWidget
+  | RadioWidget
+  | CheckboxWidget
+  | TextareaWidget;
+
+export type Widget = {
+  [key: string]: WidgetList;
 };
 
-export type Component<T extends WidgetConfig> = (
+export type WidgetProps<T extends Widget> = {
+  [K in keyof T]: WidgetValueType<T[K]>;
+};
+
+export type Component<T extends Widget> = (
   props: WidgetProps<T>
 ) => React.JSX.Element;

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:components": "tsc -p ./src/components/tsconfig.components.json",
     "start": "next start",
     "lint": "next lint"
   },

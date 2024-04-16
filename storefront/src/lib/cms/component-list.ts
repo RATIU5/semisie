@@ -1,7 +1,7 @@
-import { Component, Widget, WidgetProps } from "./types";
+import { Component, Widget } from "./types";
 
 export const componentsList = [] as {
   name: string;
-  widget: Widget[];
-  component: Component<WidgetProps<Widget[]>>;
+  widget: Widget;
+  component: Component<Widget>;
 }[];
