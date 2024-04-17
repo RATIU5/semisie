@@ -1,34 +1,33 @@
 import path from "path";
 import * as fs from "fs";
-import { Component, Widget } from "./types";
+import { Widget } from "./types";
 
 /**
  * Initializes all components in the `build/components` directory
  * @returns A promise that resolves to an array of objects containing the component and widget
  */
-export async function initializeComponents(): Promise<
+export async function initializeWidgets(): Promise<
   {
     name: string;
     description: string | undefined;
-    component: Component<Widget>;
     widget: Widget[];
   }[]
 > {
-  const componentsDir = path.join(process.cwd(), "build/components");
+  "use server";
+  const widgetsDir = path.join(process.cwd(), "src/widgets");
 
-  if (fs.existsSync(componentsDir)) {
-    const files = fs.readdirSync(componentsDir);
+  if (fs.existsSync(widgetsDir)) {
+    const files = fs.readdirSync(widgetsDir);
 
-    const components = await Promise.all(
+    const widgets = await Promise.all(
       files
-        .filter((file) => file.endsWith(".js"))
+        .filter((file) => file.endsWith(".tsx"))
         .map(async (file) => {
           try {
-            const mod = await import(`../../../build/components/${file}`);
+            const mod = await import(`../../../src/widgets/${file}`);
             return {
               name: (mod.name ?? file.split(".")[0]) as string,
               description: mod.description as string | undefined,
-              component: mod.default as Component<Widget>,
               widget: mod.widget as Widget[],
             };
           } catch (error) {
@@ -39,16 +38,15 @@ export async function initializeComponents(): Promise<
         })
     );
 
-    // Filter out any null components from the try/catch step
-    return components.filter((component) => component !== null) as {
+    // Filter out any null widgets from the try/catch step
+    return widgets.filter((widget) => widget !== null) as {
       name: string;
       description: string | undefined;
-      component: Component<Widget>;
       widget: Widget[];
     }[];
   } else {
     console.error(
-      `error: cannot find "${componentsDir}"; have you run 'pnpm build:components' yet?`
+      `error: cannot find "${widgetsDir}"; create the following directory structure if it doesn't exist: "src/widgets"?`
     );
     return [];
   }
