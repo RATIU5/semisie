@@ -1,8 +1,6 @@
-import { Button } from "@/components/ui/button";
 import { initializeWidgets } from "@/lib/cms/initialization";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { Gear, Plus } from "./icons";
 import {
   Select,
   SelectContent,
@@ -12,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import AddPageForm from "./add-page-form";
 
 export default function Sidebar(props: {
   widgets: Awaited<ReturnType<typeof initializeWidgets>>;
@@ -34,9 +33,7 @@ export default function Sidebar(props: {
                 </SelectContent>
               </Select>
               <div className="flex gap-2">
-                <Button size="icon">
-                  <Plus />
-                </Button>
+                <AddPageForm />
               </div>
             </div>
           </div>
