@@ -13,6 +13,7 @@ export interface Config {
     'payload-migrations': PayloadMigration;
   };
   globals: {};
+  locale: null;
   user: User & {
     collection: 'users';
   };
@@ -24,7 +25,7 @@ export interface Config {
 export interface User {
   id: number;
   name?: string | null;
-  role?: ('admin' | 'editor' | 'viewer') | null;
+  role: 'admin' | 'editor' | 'viewer';
   updatedAt: string;
   createdAt: string;
   email: string;
