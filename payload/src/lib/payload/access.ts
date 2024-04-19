@@ -46,7 +46,6 @@ export const isAdminNotFirstUser: FieldAccess<{ id: string }, unknown, User> = a
   req: { user },
 }) => {
   const firstUser = await isFirstUser(user?.id)
-  console.log(user?.id, firstUser)
   if (user?.role === 'admin') {
     if (firstUser) {
       return false
