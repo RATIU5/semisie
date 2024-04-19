@@ -1,13 +1,13 @@
 import type { FieldHook } from 'payload/types'
 
 import type { User } from '@/payload-types'
-import isFirstUser from '@/lib/is-first-user'
+import isFirstUser from '@/lib/payload/is-first-user'
 
-// ensure the first user created is an admin
+// ensure the first user created is a super
 // 1. lookup a single user on create as succinctly as possible
-// 2. if there are no users found, change the the role to admin
+// 2. if there are no users found, append `super` to the roles array
 // access control is already handled by this fields `access` property
-// it ensures that only admins can create and update the `roles` field
+// it ensures that only supers can create and update the `roles` field
 export const ensureFirstUserIsAdmin: FieldHook<User> = async (data) => {
   if (data.operation === 'create') {
     const users = await data.req.payload.find({
@@ -19,10 +19,6 @@ export const ensureFirstUserIsAdmin: FieldHook<User> = async (data) => {
       if (data.value === undefined || data.value !== 'admin') {
         return 'admin'
       }
-    }
-  } else if (data.operation === 'update') {
-    if (await isFirstUser(data.originalDoc?.id)) {
-      return 'admin'
     }
   }
 

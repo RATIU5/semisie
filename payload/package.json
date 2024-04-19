@@ -11,16 +11,12 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "lint": "cross-env NODE_OPTIONS=--no-deprecation next lint",
-    "generate:types": "payload generate:types",
-    "migrate": "payload migrate",
-    "migrate:create": "payload migrate:create",
-    "migrate:fresh": "payload migrate:fresh"
+    "generate:types": "payload generate:types"
   },
   "engines": {
     "node": ">=18.19.0"
   },
   "dependencies": {
-    "@payloadcms/db-mongodb": "beta",
     "@payloadcms/db-postgres": "beta",
     "@payloadcms/next": "beta",
     "@payloadcms/plugin-cloud": "beta",

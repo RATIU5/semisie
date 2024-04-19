@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload/types'
-import { hasAdminAccess, hasAdminAccessButNotFirstUser } from '@/lib/access'
-import { ensureFirstUserIsAdmin } from '@/collections/users/hooks/ensure-first-user-is-admin'
+import { admins, hasAdminAccess, isAdminNotFirstUser } from '@/lib/payload/access'
+import { ensureFirstUserIsAdmin } from './hooks'
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -9,7 +9,7 @@ export const Users: CollectionConfig = {
     useAsTitle: 'email',
   },
   access: {
-    create: hasAdminAccess,
+    create: admins,
   },
   auth: true,
   fields: [
@@ -22,7 +22,7 @@ export const Users: CollectionConfig = {
       name: 'role',
       access: {
         create: hasAdminAccess,
-        update: hasAdminAccessButNotFirstUser,
+        update: isAdminNotFirstUser,
       },
       required: true,
       defaultValue: ['editor'],

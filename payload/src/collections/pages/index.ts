@@ -1,4 +1,4 @@
-import { hasAdminOrEditorAccess, isAnyoneOrPublished } from '@/lib/access'
+import { hasAdminOrEditorAccess } from '@/lib/payload/access'
 import type { CollectionConfig } from 'payload/types'
 
 export const Pages: CollectionConfig = {
@@ -7,49 +7,46 @@ export const Pages: CollectionConfig = {
     drafts: true,
   },
   admin: {
-    defaultColumns: ['name', 'email', 'role'],
-    useAsTitle: 'email',
+    defaultColumns: ['title', 'slug', 'updatedAt'],
+    useAsTitle: 'title',
   },
   access: {
     create: hasAdminOrEditorAccess,
     delete: hasAdminOrEditorAccess,
     update: hasAdminOrEditorAccess,
-    read: isAnyoneOrPublished,
+    read: () => true,
   },
-  auth: true,
   fields: [
     {
-      type: 'text',
-      name: 'name',
-      label: 'Full Name',
-    },
-    {
-      name: 'role',
-      access: {
-        create: hasAdminAccess,
-        update: hasAdminAccessButNotFirstUser,
-      },
-      required: true,
-      defaultValue: ['editor'],
-      hasMany: false,
-      hooks: {
-        beforeChange: [ensureFirstUserIsAdmin],
-      },
-      options: [
+      type: 'tabs',
+      tabs: [
         {
-          label: 'Admin',
-          value: 'admin',
+          label: 'Details',
+          fields: [
+            {
+              name: 'title',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'slug',
+              type: 'text',
+              required: true,
+            },
+          ],
         },
         {
-          label: 'Editor',
-          value: 'editor',
-        },
-        {
-          label: 'Viewer',
-          value: 'viewer',
+          label: 'Content',
+          fields: [
+            {
+              name: 'layout',
+              type: 'blocks',
+              required: true,
+              blocks: [CallToAction, Content, MediaBlock],
+            },
+          ],
         },
       ],
-      type: 'select',
     },
   ],
 }
