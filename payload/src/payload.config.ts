@@ -5,8 +5,9 @@ import { buildConfig } from 'payload/config'
 import { fileURLToPath } from 'url'
 
 import { Users } from './collections/users'
-import { Header } from './globals/header'
+import { Menu } from './globals/main-menu'
 import { Pages } from './collections/pages'
+import { PDP } from './collections/pdp'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -15,16 +16,16 @@ export default buildConfig({
   admin: {
     user: Users.slug,
   },
-  collections: [Users, Pages],
-  globals: [Header],
+  collections: [Users, Pages, PDP],
+  globals: [Menu],
   editor: lexicalEditor({}),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET ?? '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
+      connectionString: process.env.DATABASE_URI ?? '',
     },
   }),
 })
