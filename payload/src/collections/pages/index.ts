@@ -24,14 +24,24 @@ export const Pages: CollectionConfig = {
           label: 'Details',
           fields: [
             {
-              name: 'title',
-              type: 'text',
-              required: true,
+              type: 'row',
+              fields: [
+                {
+                  name: 'title',
+                  type: 'text',
+                  required: true,
+                },
+                {
+                  name: 'slug',
+                  type: 'text',
+                  required: true,
+                },
+              ],
             },
             {
-              name: 'slug',
-              type: 'text',
-              required: true,
+              type: 'textarea',
+              name: 'description',
+              label: 'Description',
             },
           ],
         },
@@ -42,7 +52,8 @@ export const Pages: CollectionConfig = {
               name: 'layout',
               type: 'blocks',
               required: true,
-              blocks: [CallToAction, Content, MediaBlock],
+              // Add blocks in the below array
+              blocks: [],
             },
           ],
         },

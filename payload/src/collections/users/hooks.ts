@@ -1,7 +1,6 @@
 import type { FieldHook } from 'payload/types'
 
 import type { User } from '@/payload-types'
-import isFirstUser from '@/lib/payload/is-first-user'
 
 // ensure the first user created is a super
 // 1. lookup a single user on create as succinctly as possible

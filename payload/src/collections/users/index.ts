@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload/types'
-import { admins, hasAdminAccess, isAdminNotFirstUser } from '@/lib/payload/access'
+import { admins, hasAdminAccess } from '@/lib/payload/access'
 import { ensureFirstUserIsAdmin } from './hooks'
 
 export const Users: CollectionConfig = {
@@ -22,7 +22,7 @@ export const Users: CollectionConfig = {
       name: 'role',
       access: {
         create: hasAdminAccess,
-        update: isAdminNotFirstUser,
+        update: hasAdminAccess,
       },
       required: true,
       defaultValue: ['editor'],
