@@ -1,3 +1,4 @@
+import { QuoteBlock } from '@/blocks/QuoteBlock'
 import { hasAdminOrEditorAccess } from '@/lib/payload/access'
 import type { CollectionConfig } from 'payload/types'
 
@@ -53,7 +54,9 @@ export const Pages: CollectionConfig = {
               type: 'blocks',
               required: true,
               // Add blocks in the below array
-              blocks: [],
+              blocks: [
+                QuoteBlock
+              ],
             },
           ],
         },
